@@ -51,7 +51,7 @@ const Card = (article) => {
   return cardWrapper
 }
 
-const cardAppender = (selector, topic) => {
+const cardAppender = (selector) => {
   // TASK 6
   // ---------------------
   // Implement this function that takes a css selector as its only argument.
@@ -71,9 +71,6 @@ const cardAppender = (selector, topic) => {
         document.querySelector(selector).appendChild(newArticle)
       })
     })
-
-    console.log(topicArr)
-
   })
   .catch((err)=>{
     console.error(err);
