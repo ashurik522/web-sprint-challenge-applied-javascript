@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const Card = (article) => {
   // TASK 5
   // ---------------------
@@ -17,9 +19,39 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
+  const cardWrapper = document.createElement("div");
+  const headline = document.createElement("div");
+  const author = document.createElement("div");
+  const imgContainer = document.createElement("div");
+  const img = document.createElement("img");
+  const name = document.createElement("span");
+
+  cardWrapper.classList.add("card");
+  headline.classList.add("headline");
+  author.classList.add("author");
+  imgContainer.classList.add("img-container");
+
+  img.alt = "Dog author photo"
+
+  headline.textContent = article.headline;
+  img.src = article.authorPhoto;
+  name.textContent = article.authorName;
+
+
+  cardWrapper.appendChild(headline);
+  cardWrapper.appendChild(author);
+  author.appendChild(imgContainer);
+  imgContainer.appendChild(img);
+  author.appendChild(name);
+
+  cardWrapper.addEventListener("click", ()=>{
+    console.log(headline);
+  })
+
+  return cardWrapper
 }
 
-const cardAppender = (selector) => {
+const cardAppender = (selector, topic) => {
   // TASK 6
   // ---------------------
   // Implement this function that takes a css selector as its only argument.
@@ -28,6 +60,25 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
+  axios.get(`http://localhost:5001/api/articles`)
+  .then((res)=>{
+
+    const arr = res.data.articles;
+    const topicArr = Object.keys(arr);
+    topicArr.forEach(data=>{
+      arr[data].forEach(obj=>{
+        const newArticle = Card(obj);
+        document.querySelector(selector).appendChild(newArticle)
+      })
+    })
+
+    console.log(topicArr)
+
+  })
+  .catch((err)=>{
+    console.error(err);
+  })
 }
+  
 
 export { Card, cardAppender }
